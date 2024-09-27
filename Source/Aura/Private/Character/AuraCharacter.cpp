@@ -5,10 +5,12 @@
 #include "AbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/AuraPlayerState.h"
+#include "AbilitySystem/AuraAttributeSet.h"
 
 
 AAuraCharacter::AAuraCharacter()
 {
+
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 400.f, 0.f);
 	GetCharacterMovement()->bConstrainToPlane = true;
@@ -48,8 +50,18 @@ void AAuraCharacter::InitAbilityActorInfo()
 		UE_LOG(LogTemp, Warning, TEXT("PlayerState is nullptr in InitAbilityActorInfo. Initialization skipped."));
 		return; // Early return if PlayerState is not yet available
 	}
+
+	// Check for AbilitySystemComponent
+	if (!AuraPlayerState->GetAbilitySystemComponent())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("AbilitySystemComponent is nullptr."));
+		return;
+	}
 	//check(AuraPlayerState);
 	AuraPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(AuraPlayerState, this);
 	AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
 	AttributeSet = AuraPlayerState->GetAttributeSet();
+
+	UE_LOG(LogTemp, Warning, TEXT("Ability Actor Info Initialized Successfully."));
 }
+
