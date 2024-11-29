@@ -40,4 +40,6 @@ protected:
 	// Attribute set, manages the stats/attributes like health, mana, etc.
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Attributes")
 	TObjectPtr<UAttributeSet> AttributeSet;
+	//this is macro bind for ability tags and ability system
+	virtual void InitAbilityActorInfo();
 };

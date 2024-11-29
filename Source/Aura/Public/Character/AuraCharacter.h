@@ -21,6 +21,9 @@ public:
 	virtual void OnRep_PlayerState() override;
 private:
 	//created this function so we will not replate long line of codes
-	void InitAbilityActorInfo();
+	//commented this out as we also declared it on base
+	/*void InitAbilityActorInfo();*/
 	
+	//this one can be added if base was also declared with corresponding InitAbility
+	virtual void InitAbilityActorInfo() override;
 };

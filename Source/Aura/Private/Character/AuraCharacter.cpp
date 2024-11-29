@@ -1,67 +1,93 @@
-// Copyright Whizz Entertianment
-
+// Copyright Whizz Entertainment
 
 #include "Character/AuraCharacter.h"
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "Player/AuraPlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/AuraPlayerState.h"
 #include "AbilitySystem/AuraAttributeSet.h"
-
+#include "UI/HUD/AuraHUD.h"
 
 AAuraCharacter::AAuraCharacter()
 {
+    // Set up character movement
+    GetCharacterMovement()->bOrientRotationToMovement = true;
+    GetCharacterMovement()->RotationRate = FRotator(0.f, 400.f, 0.f);
+    GetCharacterMovement()->bConstrainToPlane = true;
+    GetCharacterMovement()->bSnapToPlaneAtStart = true;
 
-	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->RotationRate = FRotator(0.f, 400.f, 0.f);
-	GetCharacterMovement()->bConstrainToPlane = true;
-	GetCharacterMovement()->bSnapToPlaneAtStart = true;
-
-	bUseControllerRotationPitch = false;
-	bUseControllerRotationRoll = false;
-	bUseControllerRotationYaw = false;
-
+    // Disable controller-based rotations (handled by movement)
+    bUseControllerRotationPitch = false;
+    bUseControllerRotationRoll = false;
+    bUseControllerRotationYaw = false;
 }
 
 /*
-//ability system start replication
+// Ability system start replication
 */
 
 void AAuraCharacter::PossessedBy(AController* NewController)
 {
-	Super::PossessedBy(NewController);
+    Super::PossessedBy(NewController);
 
-	// Init ability actor info for the Server
-	InitAbilityActorInfo();
+    // Init ability actor info for the Server
+    InitAbilityActorInfo();
 }
 
 void AAuraCharacter::OnRep_PlayerState()
 {
-	Super::OnRep_PlayerState();
+    Super::OnRep_PlayerState();
 
-	// Init ability actor info for the Client
-	InitAbilityActorInfo();
+    // Init ability actor info for the Client
+    InitAbilityActorInfo();
 }
 
 void AAuraCharacter::InitAbilityActorInfo()
 {
-	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
-	if (!AuraPlayerState)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("PlayerState is nullptr in InitAbilityActorInfo. Initialization skipped."));
-		return; // Early return if PlayerState is not yet available
-	}
+    // Ensure PlayerState is valid
+    AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+    if (!AuraPlayerState)
+    {
+        UE_LOG(LogTemp, Error, TEXT("AuraPlayerState is NULL in InitAbilityActorInfo!"));
+        return;
+    }
 
-	// Check for AbilitySystemComponent
-	if (!AuraPlayerState->GetAbilitySystemComponent())
-	{
-		UE_LOG(LogTemp, Warning, TEXT("AbilitySystemComponent is nullptr."));
-		return;
-	}
-	//check(AuraPlayerState);
-	AuraPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(AuraPlayerState, this);
-	AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
-	AttributeSet = AuraPlayerState->GetAttributeSet();
+    // Initialize Ability System Component
+    AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
+    Cast<UAuraAbilitySystemComponent>(AuraPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
 
-	UE_LOG(LogTemp, Warning, TEXT("Ability Actor Info Initialized Successfully."));
+    if (!AbilitySystemComponent)
+    {
+        UE_LOG(LogTemp, Error, TEXT("AbilitySystemComponent is NULL in InitAbilityActorInfo!"));
+        return;
+    }
+
+    // Initialize Attribute Set
+    AttributeSet = AuraPlayerState->GetAttributeSet();
+    if (!AttributeSet)
+    {
+        UE_LOG(LogTemp, Error, TEXT("AttributeSet is NULL in InitAbilityActorInfo!"));
+        return;
+    }
+
+    // Initialize Ability Actor Info
+    AbilitySystemComponent->InitAbilityActorInfo(AuraPlayerState, this);
+
+    // UserWidget Init (HUD setup, only if the controller and HUD are valid)
+    if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(GetController()))
+    {
+        if (AAuraHUD* AuraHUD = Cast<AAuraHUD>(AuraPlayerController->GetHUD()))
+        {
+            AuraHUD->InitOverlay(AuraPlayerController, AuraPlayerState, AbilitySystemComponent, AttributeSet);
+        }
+        else
+        {
+            UE_LOG(LogTemp, Warning, TEXT("AuraHUD is NULL in InitAbilityActorInfo!"));
+        }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("AuraPlayerController is NULL in InitAbilityActorInfo!"));
+    }
 }
-
