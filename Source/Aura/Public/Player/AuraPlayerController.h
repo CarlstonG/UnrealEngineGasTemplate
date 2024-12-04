@@ -6,8 +6,6 @@
 #include "GameFramework/PlayerController.h"
 #include "AuraPlayerController.generated.h"
 
-
-
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;

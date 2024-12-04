@@ -26,10 +26,10 @@ public:
 
 	//ability system
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Abilities")
+	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
 	// Attribute set, manages the stats/attributes like health, mana, etc.
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Attributes")
+	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAttributeSet> AttributeSet;
 };

@@ -12,14 +12,14 @@
 //make sure to declare this if using pointers
 class UAbilitySystemComponent;
 class UAttributeSet;
-
+//game effect class
+class UGameplayEffect;
 UCLASS(Abstract)
 class AURA_API AAuraCharacterBase : public ACharacter, public IAbilitySystemInterface //added IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
-	
 	AAuraCharacterBase();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; };
@@ -42,4 +42,10 @@ protected:
 	TObjectPtr<UAttributeSet> AttributeSet;
 	//this is macro bind for ability tags and ability system
 	virtual void InitAbilityActorInfo();
+
+	//initialize Primary Attribute on Basechar
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
+
+	void InitializePrimaryAttributes() const;
 };

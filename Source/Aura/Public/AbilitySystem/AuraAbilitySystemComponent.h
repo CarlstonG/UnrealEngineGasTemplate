@@ -25,4 +25,5 @@ protected:
 	// Callback when a gameplay effect is applied
 	UFUNCTION()
 	void EffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle);
+
 };

@@ -59,7 +59,7 @@ void AAuraCharacter::InitAbilityActorInfo()
 
     if (!AbilitySystemComponent)
     {
-        UE_LOG(LogTemp, Error, TEXT("AbilitySystemComponent is NULL in InitAbilityActorInfo!"));
+        /*UE_LOG(LogTemp, Error, TEXT("AbilitySystemComponent is NULL in InitAbilityActorInfo!"));*/
         return;
     }
 
@@ -67,7 +67,7 @@ void AAuraCharacter::InitAbilityActorInfo()
     AttributeSet = AuraPlayerState->GetAttributeSet();
     if (!AttributeSet)
     {
-        UE_LOG(LogTemp, Error, TEXT("AttributeSet is NULL in InitAbilityActorInfo!"));
+       /* UE_LOG(LogTemp, Error, TEXT("AttributeSet is NULL in InitAbilityActorInfo!"));*/
         return;
     }
 
@@ -90,4 +90,5 @@ void AAuraCharacter::InitAbilityActorInfo()
     {
         UE_LOG(LogTemp, Warning, TEXT("AuraPlayerController is NULL in InitAbilityActorInfo!"));
     }
+    InitializePrimaryAttributes();
 }

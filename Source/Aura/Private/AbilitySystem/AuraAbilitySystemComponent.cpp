@@ -12,11 +12,6 @@ void UAuraAbilitySystemComponent::AbilityActorInfoSet()
         // Debug message to indicate the delegate was successfully bound
         GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Delegate bound successfully in AbilityActorInfoSet!"));
     }
-    else
-    {
-        // Debug message for invalid AbilitySystemComponent
-        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("AbilitySystemComponent is invalid!"));
-    }
 }
 
 void UAuraAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* AbilitySystemComponent,
@@ -24,17 +19,16 @@ void UAuraAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* Ability
 {
     // Debug message to show the effect was applied
     
-    GEngine->AddOnScreenDebugMessage(-1, 8.f, FColor::Blue, TEXT("Effect Applied!"));
+    /*GEngine->AddOnScreenDebugMessage(-1, 8.f, FColor::Green, TEXT("Effect Applied!"));*/
     
     //display tags
     FGameplayTagContainer TagContainer;
     EffectSpec.GetAllAssetTags(TagContainer);
-    for (const FGameplayTag& Tag : TagContainer)
-    {
-        //TODO: Broadcast the tag to the Widget Controller
-        const FString Msg = FString::Printf(TEXT("GE Tag: %s"), *Tag.ToString());
-        GEngine->AddOnScreenDebugMessage(-1, 8.f, FColor::Blue, Msg);
-    }
-
+    //for (const FGameplayTag& Tag : TagContainer)
+    //{
+    //    //TODO: Broadcast the tag to the Widget Controller
+    //    const FString Msg = FString::Printf(TEXT("GE Tag: %s"), *Tag.ToString());
+    //    GEngine->AddOnScreenDebugMessage(-1, 8.f, FColor::Red, Msg);
+    //}
     EffectAssetTags.Broadcast(TagContainer);
 }
