@@ -35,12 +35,12 @@ void AAuraEffectActor::BeginPlay()
 void AAuraEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass)
 {
 	// Log to Output Log
-	UE_LOG(LogTemp, Log, TEXT("Applying effect to target: %s with effect: %s"), *TargetActor->GetName(), *GameplayEffectClass->GetName());
+	UE_LOG(LogTemp, Log, TEXT("Applying Gwapo to target: %s with effect: %s"), *TargetActor->GetName(), *GameplayEffectClass->GetName());
 
 	// If you want to visualize the effect application (on screen)
 	if (GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Applying effect to: %s"), *TargetActor->GetName()));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Applying Gwapo to: %s"), *TargetActor->GetName()));
 	}
 
 	// Existing code to apply effect
@@ -65,7 +65,7 @@ void AAuraEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGam
 void AAuraEffectActor::OnOverlap(AActor* TargetActor)
 {
 	// Log when overlap occurs
-	UE_LOG(LogTemp, Log, TEXT("OnOverlap: Applying effect to %s"), *TargetActor->GetName());
+	UE_LOG(LogTemp, Log, TEXT("OnOverlap: Applying Gwapo to %s"), *TargetActor->GetName());
 
 	if (InstantEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap)
 	{
